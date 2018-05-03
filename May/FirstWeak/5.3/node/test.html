@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   <form action="">
+       <input id="inp" type="file" onchange="upload" >
+   </form> 
+</body>
+<script>
+    //创建XMLHttpRequest对象
+    var request = false;
+    try{
+        request = new XMLHttpRequest();
+    }catch(tryMicrosoft){
+        try{
+            request = new ActiveXObject("Msxml.XMLHTTP");
+        }catch(other){
+            try{
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }catch(err){
+                request = false;
+            }
+        }
+    }
+    if(!false){
+        alert("Error in initializing XMLHttpRequest")
+    }
+    //建立连接
+    var url = "/upload";
+    request.open(url,"POST",true);
+    //指定回调函数
+    request.onreadystatechange = getData;
+    //发送请求
+    
+    function getData(){
+        if(request.readystatus==4&&request.status==200){
+            var res = request.responseText;
+            console.log("data",res)
+        }
+    }
+    var inp = document.getElementById("#inp");
+    function upload(){
+        var files = inp.files[0];
+        var formData = new formData();
+        //获取到图片数据后就发送请求
+        request.send(data);
+
+    }
+</script>
+</html>
