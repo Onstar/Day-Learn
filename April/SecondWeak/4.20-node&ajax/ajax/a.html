@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax请求</title>
+</head>
+<body>
+   <div class="container">
+       <p>输入电话号码：</p>
+       <input type="text" id="phone" name="phone" onchange="getCurstomInfo">
+   </div>
+   <div id="info">
+
+   </div> 
+</body>
+<script>
+    'use strict'
+    //创建XMLHTTPRequest对象
+   let request = false;
+   try{
+       request = new XMLHttpRequest();
+   }catch(microsoft){
+       try{
+           request = new ActiveXObject("Msxml2.XMLHTTP");
+       }catch(otherMicrosoft){
+           try{
+               request = new ActiveXObject("Microsoft.XMLHTTP");
+           }catch(faild){
+               request = false;
+           }
+       }
+   }
+   if(!request){
+       alert("Error initializing XMLHttpRequest");
+   } 
+   function getCurstomInfo(){
+       //创建(打开)连接
+       let phone = document.getElementById("phone");
+       let url = "/node/getData.js?phone=" + escape(phone);
+       request.open("GET",url,true);
+       //设置回调函数
+       request.onreadystatechange = updatePage;
+       //发送请求
+       request.send(null);
+   }
+   function updatePage(){
+       if(request.readyState==4){
+           if(request.status==200){
+               let response = request.responseText;
+               document.getElementById("info").innerHTML=response;
+           }else{
+               alert("status is" + request.status)
+           }
+       }
+   }
+</script>
+</html>

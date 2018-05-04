@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="请求" onclick="getInfo()">
+    <input type="text" id="info" >
+</body>
+<script>
+    'use strict'
+    //创建XMLHTTPRequest对象
+   let request = false;
+   try{
+       request = new XMLHttpRequest();
+   }catch(microsoft){
+       try{
+           request = new ActivtXObject("Msxml2.XMLHTTP");
+       }catch(otherMicrosoft){
+           try{
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+           }catch(faild){
+               request = false;
+           }
+       }
+   } 
+   if(!request){
+       alert("Error initializing XMLHttpRequest");
+   }
+   //
+   function getInfo(){
+       //建立请求连接
+       let phone = document.getElementById("info").value;
+       let url = "/getData?phone=" + escape(phone) ;
+       request.open("GET",url,true);
+       //回调函数
+       request.onreadystatechange = update;
+       //发送请求
+       request.send(null);
+   }
+   function update(){
+       if(request.readyState==4){
+           console.log(request.getResponseHeader("Date"));
+       }
+   }
+//    function update(){
+//        if(request.readyState == 4){
+//            if(request.status == 200){
+//                let msg = request.responseText;
+//             //    console.log(msg);
+//            }
+//        }else{
+//         //    console.log("ss")
+//            console.log(request.readyState+":"+request.responseText)
+//        }
+//    }
+   
+</script>
+</html>

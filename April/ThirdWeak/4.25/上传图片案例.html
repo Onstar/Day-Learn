@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+   	<form>
+	    <input type="file" onchange="updateImg(1)" id="file1" accept="image/*"/>
+	    <!--写两个input是为了能控制提示语，进行中英文转换-->
+    </form>
+</body>
+<script>
+function updateImg (key){
+        var that = this;
+        var file = document.getElementById("file"+key);
+        var File = file.files[0];
+        if(File.name.indexOf(".gif")!=-1||File.name.indexOf(".jpeg")!=-1||File.name.indexOf(".jpg")!=-1||File.name.indexOf(".png")!=-1||File.name.indexOf(".svg")!=-1){
+        	var formData = new FormData();
+        	formData.append('file', file.files[0]);
+	        $.ajax({
+	           type: "POST", //必须用post
+	           url: this.myIP3+'goods/uploadfile.do',   //  
+	           crossDomain: true,
+	           jsonp: "jsoncallback",
+	           data: formData,
+	           contentType: false, //必须
+	           processData: false,
+	           xhrFields: {
+	            withCredentials: true
+	        	},
+	           //不能用success，否则不执行
+	           complete: function (data) {
+	               var data = jQuery.parseJSON(data.responseText);
+	               that.ajaxResult = 0;
+	               if (key===1) {
+	               		that.updateData.paths.push(data.filepath);
+	               		that.updateImages.push(data.filepath);
+	               		$("#file1").wrap('<form>').closest('form').get(0).reset();
+	               		/*begining 图片预览*/
+	//									var reader = new FileReader();
+	//									reader.readAsDataURL(File);
+	//									reader.onload = function(e) {
+	//										that.editImgs.push(e.target.result)
+	//									}
+	//									console.log(that.editImgs.length)
+						/*ending 图片预览*/
+	               } 
+	           }
+	          
+	        })
+        }
+    }
+</script>
+</html>

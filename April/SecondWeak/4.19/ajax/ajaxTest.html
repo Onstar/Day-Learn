@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>Enter your phone number:</p>
+    <input type="text" size="14" name="phone" id="phone" onchange="getCustomerInfo();">
+</body>
+<script>
+    'use strict'
+    let request = false;
+    try{
+        request = new XMLHttpRequest();
+    }catch(tryMicrosoft){
+        try{
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        }catch(othermicrosoft){
+            try{
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }catch(faild){
+                request = false;
+            }
+        }
+    }
+    if(!request){
+        alert("Error initializing XMLHttpRequest");
+    }
+    function getCustomerInfo(){
+        let phone = document.getElementById("phone").value;
+        // let url = "localhost:3000？phone="+phone;
+        let url = "/index.js？phone="+escape(phone);   //escape对字符串进行编码
+        //用于转义不能用明文正确发送的任何字符。比如，电话号码中的空格将转换成字符串%20，从而能在URL中传递这些字符
+        
+    }
+</script>
+</html>
